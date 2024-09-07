@@ -1,0 +1,42 @@
+ <!-- JAVASCRIPT -->
+ {{-- @vite([
+    'resources/libs/jquery/jquery.min.js',
+    'resources/libs/bootstrap/js/bootstrap.bundle.min.js',
+    'resources/libs/metismenu/metisMenu.min.js',
+    'resources/libs/simplebar/simplebar.min.js',
+    'resources/libs/node-waves/waves.min.js',
+    'resources/libs/apexcharts/apexcharts.min.js',
+    'resources/js/pages/dashboard.init.js',
+    'resources/js/pages/saas-dashboard.init.js',
+    'resources/js/app.js'
+]); --}}
+
+ <script src="{{ asset('libs/jquery/jquery.min.js')}}"></script>
+ <script src="{{ asset('libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+ <script src="{{ asset('libs/simplebar/simplebar.min.js')}}"></script>
+ {{-- <script src="{{ asset('libs/metismenu/metisMenu.min.js')}}"></script> --}}
+ <script src="{{ asset('libs/node-waves/waves.min.js')}}"></script>
+ <script src="{{ asset('libs/apexcharts/apexcharts.min.js')}}"></script>
+ <script src="{{ asset('js/pages/dashboard.init.js')}}"></script>
+ <script src="{{ asset('js/pages/saas-dashboard.init.js')}}"></script>
+ <script src="{{ asset('js/app.js')}}"></script>
+
+ <script src="{{ asset('js/pages/project-create.init.js') }}"></script>
+ {{-- DROP ZONE --}}
+ <script src="{{ asset('libs/dropzone/dropzone-min.js') }}"></script>
+ <script src="{{ asset('js/pages/form-file-upload.init.js') }}"></script>
+ {{-- Step form --}}
+ <script src="{{ asset('js/jquery.steps.min.js')}}"></script>
+<script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
+ {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
+
+ <script src="{{ asset('js/pages/form-advanced.init.js') }}"></script>
+ <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+ <script>
+    $("#booking-form").steps({
+        headerTag: "h3"
+        , bodyTag: "section"
+        , transitionEffect: "slideLeft"
+        , autoFocus: true
+    });
+ </script>
