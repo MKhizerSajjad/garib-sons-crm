@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
+    {{--  data-bs-theme="dark" --}}
     {{-- <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"> --}}
     <head>
         <meta charset="utf-8" />
@@ -23,7 +24,7 @@
 
             @guest
                 {{-- Not loggedIn then here --}}
-                @yield('content');
+                @yield('content')
             @else
                 <div id="layout-wrapper">
                     @if(Auth::check())

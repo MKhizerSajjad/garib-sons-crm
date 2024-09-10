@@ -1,5 +1,8 @@
 <?php
-use App\Models\Setting;
+use Carbon\Carbon;
+use App\Models\Setting;use App\Models\{
+    PurchaseOrder,
+};
 
 function statusReturn($prefix, $statuses, $status = null, $type = null)
 {
@@ -78,10 +81,10 @@ function getPayment($prefix, $status = null, $type = null)
 {
     $statuses = [
         'status'=> [
-            '1' => ['Paid', '<span class="badge bg-success font-size-18"> <i class="bx bx-euro"></i> Paid</span>'],
-            '2' => ['Partially Paid', '<span class="badge bg-primary font-size-18"> <i class="bx bx-euro"></i> Partially Paid</span>'],
-            '3' => ['Pending', '<span class="badge bg-warning font-size-18"> <i class="bx bx-euro"></i> Pending</span>'],
-            '4' => ['Unpaid', '<span class="badge bg-danger font-size-18"> <i class="bx bx-euro"></i> Unpaid</span>']
+            '1' => ['Paid', '<span class="badge bg-success font-size-18"> Paid</span>'],
+            '2' => ['Partially Paid', '<span class="badge bg-primary font-size-18"> Partially Paid</span>'],
+            '3' => ['Pending', '<span class="badge bg-warning font-size-18"> Pending</span>'],
+            '4' => ['Unpaid', '<span class="badge bg-danger font-size-18"> Unpaid</span>']
         ],
         'via'=> [
             '1' => ['Cash', '<span class="badge bg-primary">Cash</span>'],
@@ -89,6 +92,12 @@ function getPayment($prefix, $status = null, $type = null)
             '3' => ['Bank Transfer', '<span class="badge bg-info">Bank Transfer</span>'],
             '4' => ['Card', '<span class="badge bg-info">Card</span>'],
             '5' => ['Stripe', '<span class="badge bg-info">Stripe</span>'],
+        ],
+        'term'=> [
+            '1' => ['3 Days', '<span class="badge bg-primary">3 Days</span>'],
+            '2' => ['10 Days', '<span class="badge bg-danger">10 Days</span>'],
+            '3' => ['15 Days', '<span class="badge bg-info">15 Days</span>'],
+            '4' => ['30 Days', '<span class="badge bg-info">30 Days</span>'],
         ]
     ];
 
@@ -161,6 +170,64 @@ function getFields($prefix, $status = null, $type = null)
     return statusReturn($prefix, $statuses, $status, $type );
 }
 
+function getDelivery($prefix, $status = null, $type = null)
+{
+    $statuses = [
+        'mode'=> [
+            '1' => ['Traller', '<span class="badge bg-success">Traller</span>'],
+            '2' => ['Truck', '<span class="badge bg-primary">Truck</span>'],
+            '3' => ['Bag', '<span class="badge bg-warning">Bag</span>'],
+            '4' => ['Katta', '<span class="badge bg-secondary">Katta</span>'],
+            '5' => ['KG', '<span class="badge bg-info">KG</span>'],
+        ],
+        'term'=> [
+            '1' => ['FOB', '<span class="badge bg-success">FOB</span>'],
+            '2' => ['C&F', '<span class="badge bg-primary">C&F</span>'],
+        ],
+    ];
+
+    return statusReturn($prefix, $statuses, $status, $type );
+}
+
+function getBroker($prefix, $status = null, $type = null)
+{
+    $statuses = [
+        'term'=> [
+            '1' => ['Immediate', '<span class="badge bg-success">Immediate</span>'],
+            '2' => ['Delay', '<span class="badge bg-primary">Delay</span>'],
+        ],
+    ];
+
+    return statusReturn($prefix, $statuses, $status, $type );
+}
+
+function getReturn($prefix, $status = null, $type = null)
+{
+    $statuses = [
+        'types'=> [
+            '1' => ['Replacement', '<span class="badge bg-success">Replacement</span>'],
+            '2' => ['Replaceable', '<span class="badge bg-primary">Replaceable</span>'],
+            '3' => ['Non Replaceable', '<span class="badge bg-primary">Non Replaceable</span>'],
+        ],
+    ];
+
+    return statusReturn($prefix, $statuses, $status, $type );
+}
+
+function getShifts($prefix, $status = null, $type = null)
+{
+    $statuses = [
+        'types'=> [
+            '1' => ['Morning', '<span class="badge bg-primary">Morning</span>'],
+            '2' => ['Evening', '<span class="badge bg-warning">Evening</span>'],
+            '3' => ['Weekend', '<span class="badge bg-secondary">Weekend</span>'],
+        ],
+    ];
+
+    return statusReturn($prefix, $statuses, $status, $type );
+}
+
+
 
 // ************************* OTHERS ************************
 function getFileTypeFromExtension($extension) {
@@ -199,8 +266,8 @@ function numberFormat($amount, $type=null) {
     $formatted = number_format($amount, 2, '.', ',');
 
     switch ($type) {
-        case 'euro':
-            return $formatted . '€';
+        case 'pkr':
+            return $formatted . '';
         case 'percentage':
             return $formatted . '%';
         default:
@@ -208,15 +275,106 @@ function numberFormat($amount, $type=null) {
     }
 }
 
-function getShifts($prefix, $status = null, $type = null)
-{
-    $statuses = [
-        'types'=> [
-            '1' => ['Morning', '<span class="badge bg-primary">Morning</span>'],
-            '2' => ['Evening', '<span class="badge bg-warning">Evening</span>'],
-            '3' => ['Weekend', '<span class="badge bg-secondary">Weekend</span>'],
-        ],
-    ];
+function generateCode($type, $prefix, $season = null, $format = 'full') {
 
-    return statusReturn($prefix, $statuses, $status, $type );
+    $season = getSeason($season, $format);
+    $code = $prefix . '-' . $season;
+    if($type == 'po') {
+        $todaysCount = PurchaseOrder::where('code', 'LIKE', $code.'%')->count();
+    } else {
+        return 'Invalid';
+    }
+    // Increment the max code number by 1, if null set it to 1
+    return $code. str_pad(++$todaysCount, 5, '0', STR_PAD_LEFT);
+}
+
+
+function getSeason($year = null, $format = 'full')
+{
+    // If no year is provided, use the current year
+    if (is_null($year)) {
+        $year = date('Y');
+    }
+
+    // Convert two-digit year to four-digit year if necessary
+    if (is_numeric($year) && strlen($year) == 4) {
+        $startYear = intval($year);
+    } elseif (is_numeric($year) && strlen($year) == 2) {
+        $currentYear = date('Y');
+        $currentYearPrefix = intval(substr($currentYear, 0, 2));
+        $yearPrefix = intval($year / 100);
+
+        // Determine if the two-digit year belongs to the current century or next century
+        if ($yearPrefix < $currentYearPrefix) {
+            $startYear = $currentYearPrefix * 100 + $year;
+        } else {
+            $startYear = ($currentYearPrefix - 1) * 100 + $year;
+        }
+    } else {
+        return 'Invalid year';
+    }
+
+    // Ensure the year is valid
+    if ($startYear < 1000 || $startYear > 9999) {
+        return 'Invalid year';
+    }
+
+    $endYear = $startYear + 1;
+    $endYearFormatted = substr($endYear, -2);
+
+    return $format === 'short'
+        ? substr($startYear, -2) . $endYearFormatted
+        : "{$startYear}-{$endYearFormatted}";
+}
+
+function numberToWords($num)
+{
+    if ($num === 0) return "zero";
+
+    $units = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+    $teens = ["", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+    $tens = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+    $thousands = ["", "thousand", "million", "billion", "trillion"];
+
+    function convertBelowThousand($n)
+    {
+        global $units, $teens, $tens;
+
+        $word = "";
+
+        if ($n >= 100) {
+            $word .= $units[floor($n / 100)] . " hundred ";
+            $n %= 100;
+        }
+
+        if ($n >= 20) {
+            $word .= $tens[floor($n / 10)] . " ";
+            $n %= 10;
+        }
+
+        if ($n >= 11 && $n <= 19) {
+            $word .= $teens[$n - 10] . " ";
+            $n = 0;
+        }
+
+        if ($n > 0) {
+            $word .= $units[$n] . " ";
+        }
+
+        return $word;
+    }
+
+    $words = "";
+    $chunkCount = 0;
+
+    while ($num > 0) {
+        $chunk = $num % 1000;
+        if ($chunk > 0) {
+            $words = convertBelowThousand($chunk) . ($thousands[$chunkCount] ? " " . $thousands[$chunkCount] : "") . " " . $words;
+        }
+        $num = floor($num / 1000);
+        $chunkCount++;
+    }
+
+    return trim($words);
 }

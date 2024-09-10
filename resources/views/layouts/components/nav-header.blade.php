@@ -3,24 +3,24 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box pt-3">
-                {{-- <a href="{{route('dashboard')}}" class="logo logo-dark">
+                <a href="{{route('dashboard')}}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ asset('images/logo.webp') }}" alt="" height="22">
+                        <img src="{{ asset('images/logo.png') }}" alt="" height="20">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('images/logo.webp') }}" alt="" height="17">
+                        <img src="{{ asset('images/logo.png') }}" alt="" height="10">
                     </span>
                 </a>
 
                 <a href="{{route('dashboard')}}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ asset('images/logo.webp') }}" alt="" height="22">
+                        <img src="{{ asset('images/logo.png') }}" alt="" height="20">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('images/logo.webp') }}" alt="" height="55">
+                        <img src="{{ asset('images/logo.png') }}" alt="" height="38">
                     </span>
-                </a> --}}
-                <h2>Concreted Education</h2>
+                </a>
+                {{-- <h2>Concreted Education</h2> --}}
             </div>
 
             <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">

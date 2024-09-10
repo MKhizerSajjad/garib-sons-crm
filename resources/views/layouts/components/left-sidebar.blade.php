@@ -4,13 +4,13 @@
     @endphp
 
     {{-- <div class="d-flex"> --}}
-        {{-- <!-- LOGO -->
-        <div class="navbar-brand-box">
+        <!-- LOGO -->
+        {{-- <div class="navbar-brand-box">
             <a href="index.html" class="logo logo-dark">
                 <span class="logo-sm">
                     <img src="{{ asset('images/logo.png') }}" alt="" height="22">
                 </span>
-                <span class="logo-lg">\
+                <span class="logo-lg">
                     <img src="{{ asset('images/logo.png') }}" alt="" height="17">
                 </span>
             </a>
@@ -40,34 +40,20 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('university.index') }}" class="waves-effect">
-                        <i class="bx bx-buildings"></i>
-                        <span key="t-universties">Universties</span>
+                    <a href="{{ route('po.index') }}" class="waves-effect">
+                        <i class="bx bx-file"></i>
+                        <span key="t-po">Purchase Order</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('course.index') }}" class="waves-effect">
-                        <i class="bx bx-book"></i>
-                        <span key="t-courses">Courses</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('agent.index') }}" class="waves-effect">
-                        <i class="bx bx-user-circle"></i>
-                        <span key="t-courses">Agents</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-book-open"></i>
-                        <span key="t-avail-course">University Courses</span>
+                    {{-- <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-store"></i>
+                        <span key="t-ecommerce">Shop</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('university-courses.index') }}" key="t-universities">Universities</a></li>
-                        <li><a href="{{ route('university-courses.list') }}" key="t-courses">Courses</a></li>
-                        {{-- <li><a href="{{ route('intake-course.index') }}" key="t-product-detail">Courses</a></li> --}}
+                        <li><a href="{{ route('item.index') }}" key="t-products">Items</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
                 {{-- @if (in_array(auth()->user()->user_type , [1, 2, 3]))
                     <li>

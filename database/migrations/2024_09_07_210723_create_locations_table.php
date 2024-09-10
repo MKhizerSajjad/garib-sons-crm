@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status')->default(1);
             $table->integer('order')->nullable();
-            $table->string('name')->indexed();
-            $table->foreignId('department_id')->nullable()->constrained()->onDelete('no action')->indexed()->comment('to assign main depoartment');
-            $table->text('description')->nullable();
+            $table->string('name');
+            $table->text('detail')->nullable();
+            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('no action');
+            $table->foreignId('state_id')->nullable()->constrained('states')->onDelete('no action');
+            $table->foreignId('city_id')->nullable()->constrained('cities')->onDelete('no action');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('locations');
     }
 };

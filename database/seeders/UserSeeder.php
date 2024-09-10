@@ -29,10 +29,10 @@ class UserSeeder extends Seeder
                 ],
                 [
                     'user_type'   => 1,
-                    'first_name'  => 'Concreted',
-                    'last_name'   => 'Education',
+                    'first_name'  => 'Garib',
+                    'last_name'   => 'Sons',
                     'phone'       => '+923094118700',
-                    'email'       => 'admin@concretededucation.com',
+                    'email'       => 'garibsons@gmail.com',
                     'password'    => bcrypt('12345678'),
                     'created_at' => now(),
                     'updated_at' => now(),

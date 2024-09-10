@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('supplier_agents', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status')->default(1);
-            $table->integer('order')->nullable();
-            $table->string('name')->indexed();
-            $table->foreignId('department_id')->nullable()->constrained()->onDelete('no action')->indexed()->comment('to assign main depoartment');
-            $table->text('description')->nullable();
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('landline')->nullable();
+            $table->string('phone')->unique();
+            $table->string('address')->nullable();
+            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('no action');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('supplier_agents');
     }
 };

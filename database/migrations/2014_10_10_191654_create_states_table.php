@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('states', function (Blueprint $table) {
             $table->id();
             $table->string('name')->indexed();
-            $table->foreignId('country_id')->constrained()->onDelete('cascade');
+            $table->foreignId('country_id')->onDelete('no action')->onDelete('cascade');
             // $table->unsignedInteger('country_id')->index();
             $table->string('country_code', 2);
             $table->string('fips_code')->nullable();
