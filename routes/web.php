@@ -24,15 +24,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get-subitems', [DependentController::class, 'getSubitems']);
     Route::get('get-agents', [DependentController::class, 'getAgents']);
 
-    Route::prefix('po')->group(function () {
-        Route::get('/', [PurchaseOrderController::class, 'index'])->name('po.index');
-        Route::get('create', [PurchaseOrderController::class, 'create'])->name('po.create');
-        Route::post('/store', [PurchaseOrderController::class, 'store'])->name('po.store');
-        Route::get('{task}', [PurchaseOrderController::class, 'show'])->name('po.show');
-        Route::get('{task}/edit', [PurchaseOrderController::class, 'edit'])->name('po.edit');
-        Route::put('{task}/update', [PurchaseOrderController::class, 'update'])->name('po.update');
-        Route::delete('{task}/delete', [PurchaseOrderController::class, 'destroy'])->name('po.destroy');
-        Route::get('{task}/delete-media', [PurchaseOrderController::class, 'destroyMedia'])->name('po.destroyMedia');
-        Route::get('{task}/invoice', [PurchaseOrderController::class, 'invoice'])->name('po.invoice');
+    Route::prefix('purchaseorder')->group(function () {
+        Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchaseorder.index');
+        Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchaseorder.create');
+        Route::post('/store', [PurchaseOrderController::class, 'store'])->name('purchaseorder.store');
+        Route::get('{task}', [PurchaseOrderController::class, 'show'])->name('purchaseorder.show');
+        Route::get('{task}/edit', [PurchaseOrderController::class, 'edit'])->name('purchaseorder.edit');
+        Route::put('{task}/update', [PurchaseOrderController::class, 'update'])->name('purchaseorder.update');
+        Route::delete('{task}/delete', [PurchaseOrderController::class, 'destroy'])->name('purchaseorder.destroy');
+        Route::get('{task}/delete-media', [PurchaseOrderController::class, 'destroyMedia'])->name('purchaseorder.destroyMedia');
+        Route::get('{task}/invoice', [PurchaseOrderController::class, 'invoice'])->name('purchaseorder.invoice');
     });
 });

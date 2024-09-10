@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-xl-10 col-sm-9">
 
-                        <form method="POST" action="{{ route('po.store') }}" class="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('purchaseorder.store') }}" class="form" enctype="multipart/form-data">
                             @csrf
                             <div class="card">
                                 <div class="card-body">
@@ -51,8 +51,8 @@
                                         @endif
                                         <div class="tab-pane fade show active" id="v-pills-item" role="tabpanel" aria-labelledby="v-pills-item-tab">
                                             <div>
-                                                <input type="text" name="status" value="1">
-                                                <input type="text" name="created_by" value="{{ auth()->user()->id }}">
+                                                <input type="hidden" name="status" value="1">
+                                                <input type="hidden" name="created_by" value="{{ auth()->user()->id }}">
                                                 <h4 class="card-title">Purchase Order Basic information</h4>
                                                 <p class="card-title-desc">Fill all information below</p>
                                                 <div class="form-group row mb-2">
@@ -562,11 +562,11 @@
 
 
 
-                                                <h4 class="card-title mt-5">Amount</h4>
                                                 {{-- <p class="card-title-desc">Please select your required services carefully</p> --}}
                                                 <div class="mb-5">
 
                                                     <div class="mb-3 col-sm-12 offset-sm-0 col-md-4 offset-md-8">
+                                                        <h4 class="card-title mt-5">Amounts</h4>
                                                         <label for="payment_term" class="form-label">Payment Term <span class="text text-danger"> *</span></label>
                                                         <select class="form-control" title="payment_term" name="payment_term" id="payment_term">
                                                             <option value="">Select Payment Terms </option>

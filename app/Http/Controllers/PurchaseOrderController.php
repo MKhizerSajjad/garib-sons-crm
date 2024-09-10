@@ -188,7 +188,7 @@ class PurchaseOrderController extends Controller
 
         // PurchaseOrder::create($validatedData);
 
-        return redirect()->route('po.index')->with('success','Record created successfully');
+        return redirect()->route('purchaseorder.index')->with('success','Record created successfully');
     }
 
     /**

@@ -40,7 +40,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('po.index') }}" class="waves-effect">
+                    <a href="{{ route('purchaseorder.index') }}" class="waves-effect">
                         <i class="bx bx-file"></i>
                         <span key="t-po">Purchase Order</span>
                     </a>

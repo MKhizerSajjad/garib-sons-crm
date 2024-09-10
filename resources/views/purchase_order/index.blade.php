@@ -11,7 +11,7 @@
                         <h4 class="mb-sm-0 font-size-18">Purchase Order</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class=""><a href="{{route('po.index')}}">Purchase Order</a></li>
+                                <li class=""><a href="{{route('purchaseorder.index')}}">Purchase Order</a></li>
                                 <li class="mx-1"><a href="javascript: void(0);"> > </a></li>
                                 <li class="breadcrumb-item active">Purchase Orders List</li>
                             </ol>
@@ -35,7 +35,7 @@
                         <div class="card-body">
                             <h4 class="card-title">Purchase Orders List</h4>
                             <div class="d-flex justify-content-end gap-2" bis_skin_checked="1">
-                                <a href="{{ route('po.create') }}" class="btn btn-primary waves-effect waves-light"> <i class="bx bx-plus me-1"></i> Add New</a>
+                                <a href="{{ route('purchaseorder.create') }}" class="btn btn-primary waves-effect waves-light"> <i class="bx bx-plus me-1"></i> Add New</a>
                             </div>
                             {{-- <div class="card-title-desc card-subtitle" bis_skin_checked="1">Create responsive tables by wrapping any <code>.table</code> in <code>.table-responsive</code>to make them scroll horizontally on small devices (under 768px).</div> --}}
                             @if (count($data) > 0)
@@ -68,7 +68,7 @@
                                                     {{-- <td>{!! getPayment('status', $po->status, 'badge') !!}</td> --}}
                                                     <td class="text-center">
                                                         <a href="#"><i class="bx bx-receipt"></i></a>
-                                                        {{-- <a href="{{ route('po.edit', $po->id) }}"><i class="bx bx-pencil"></i></a> --}}
+                                                        {{-- <a href="{{ route('purchaseorder.edit', $po->id) }}"><i class="bx bx-pencil"></i></a> --}}
                                                     </td>
                                                 </tr>
                                             @endforeach
