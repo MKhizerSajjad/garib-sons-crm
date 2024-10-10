@@ -2,6 +2,9 @@
 use Carbon\Carbon;
 use App\Models\Setting;use App\Models\{
     PurchaseOrder,
+    ArrivalInspection,
+    ArrivalGatePass,
+    ArrivalWeighbridge
 };
 
 function statusReturn($prefix, $statuses, $status = null, $type = null)
@@ -38,6 +41,10 @@ function getGenStatus($prefix, $status = null, $type = null)
         'bool'=> [
             '1' => ['Yes', '<span class="badge bg-primary">Yes</span>'],
             '2' => ['No', '<span class="badge bg-warning">No</span>']
+        ],
+        'acceptance'=> [
+            '1' => ['Accept', '<span class="badge bg-success">Accept</span>'],
+            '2' => ['Reject', '<span class="badge bg-danger">Reject</span>']
         ]
     ];
 
@@ -184,11 +191,87 @@ function getDelivery($prefix, $status = null, $type = null)
             '1' => ['FOB', '<span class="badge bg-success">FOB</span>'],
             '2' => ['C&F', '<span class="badge bg-primary">C&F</span>'],
         ],
+        'quality' => [
+            '1' => ['Foreign Matter', '<span class="badge bg-danger">Foreign Matter</span>'],
+            '2' => ['Immature / Shrivelled', '<span class="badge bg-warning">Immature / Shrivelled</span>'],
+            '3' => ['Paddy', '<span class="badge bg-success">Paddy</span>'],
+            '4' => ['Damaged / Discolor', '<span class="badge bg-danger">Damaged / Discolor</span>'],
+            '5' => ['Broken', '<span class="badge bg-primary">Broken</span>'],
+            '6' => ['Green Grains', '<span class="badge bg-info">Green Grains</span>'],
+            '7' => ['Yellow / Amber Grains', '<span class="badge bg-warning">Yellow / Amber Grains</span>'],
+            '8' => ['Red Grains', '<span class="badge bg-danger">Red Grains</span>'],
+            '9' => ['Moisture', '<span class="badge bg-light">Moisture</span>'],
+            '10' => ['Average Grain Length', '<span class="badge bg-secondary">Average Grain Length</span>'],
+            '11' => ['Pecks', '<span class="badge bg-info">Pecks</span>'],
+            '12' => ['Chalky Grains', '<span class="badge bg-warning">Chalky Grains</span>'],
+            '13' => ['Purity C/V', '<span class="badge bg-success">Purity C/V</span>'],
+            '14' => ['Aflatoxin', '<span class="badge bg-danger">Aflatoxin</span>'],
+            '15' => ['Chobba', '<span class="badge bg-secondary">Chobba</span>'],
+            '16' => ['Look', '<span class="badge bg-light">Look</span>'],
+        ],
     ];
 
     return statusReturn($prefix, $statuses, $status, $type );
 }
+function calculateDelivery($mode = null, $quantity = null, $type = 'min') {
+    $results = [
+        'min_traller' => 0,
+        'min_truck' => 0,
+        'min_bag' => 0,
+        'min_katta' => 0,
+        'min_kg' => 0,
+        'max_traller' => 0,
+        'max_truck' => 0,
+        'max_bag' => 0,
+        'max_katta' => 0,
+        'max_kg' => 0,
+    ];
 
+    // Define conversion factors for min and max
+    $conversionFactors = [
+        'min' => [
+            'traller' => [0.00004, 0.00008, 0.01, 0.02],
+            'truck' => [0.002, 0.004, 0.5, 50],
+            'bag' => [0.004, 0.008, 2, 100],
+            'katta' => [0.5, 125, 250, 12500],
+            'kg' => [2, 250, 500, 25000],
+        ],
+        'max' => [
+            'traller' => [2, 320, 640, 32000],
+            'truck' => [0.5, 160, 320, 16000],
+            'bag' => [0.003125, 0.00625, 2, 100],
+            'katta' => [0.0015625, 0.003125, 0.5, 50],
+            'kg' => [0.00003125, 0.0000625, 0.01, 0.02],
+        ],
+    ];
+
+    // Select the appropriate conversion factors based on the type
+    $factors = $conversionFactors[$type];
+
+    // Map mode to corresponding keys
+    $modeMapping = [
+        '1' => 'traller',
+        '2' => 'truck',
+        '3' => 'bag',
+        '4' => 'katta',
+        '5' => 'kg',
+    ];
+
+    // Check if mode is valid
+    if (isset($modeMapping[$mode]) && !is_null($quantity) && is_numeric($quantity) && $quantity > 0) {
+        $key = $modeMapping[$mode];
+
+        // Calculate results based on the selected mode and quantity
+        $results['max_' . $key] = $quantity * $factors[$key][3]; // For max
+        // foreach ($modeMapping as $m => $k) {
+        //     if ($k !== $key) {
+        //         $results['max_' . $k] = $quantity / $factors[$key][array_search($k, array_keys($modeMapping))];
+        //     }
+        // }
+    }
+
+    return $results;
+}
 function getBroker($prefix, $status = null, $type = null)
 {
     $statuses = [
@@ -227,6 +310,19 @@ function getShifts($prefix, $status = null, $type = null)
     return statusReturn($prefix, $statuses, $status, $type );
 }
 
+function getDeduction($prefix, $status = null, $type = null)
+{
+    $statuses = [
+        'types'=> [
+            '1' => ['Mositure', '<span class="badge bg-primary">Mositure</span>'],
+            '2' => ['Damage', '<span class="badge bg-warning">Damage</span>'],
+            '3' => ['Chalky', '<span class="badge bg-secondary">Chalky</span>'],
+            '4' => ['Damage', '<span class="badge bg-secondary">Damage</span>'],
+        ],
+    ];
+
+    return statusReturn($prefix, $statuses, $status, $type );
+}
 
 
 // ************************* OTHERS ************************
@@ -277,10 +373,16 @@ function numberFormat($amount, $type=null) {
 
 function generateCode($type, $prefix, $season = null, $format = 'full') {
 
-    $season = getSeason($season, $format);
+    $season = !empty($season) ? getSeason($season, $format) : '';
     $code = $prefix . '-' . $season;
     if($type == 'po') {
         $todaysCount = PurchaseOrder::where('code', 'LIKE', $code.'%')->count();
+    } elseif($type == 'inspection') {
+        $todaysCount = ArrivalInspection::where('code', 'LIKE', $code.'%')->count();
+    } elseif($type == 'passin') {
+        $todaysCount = ArrivalGatePass::where('code', 'LIKE', $code.'%')->where('count', 1)->count();
+    } elseif($type == 'weighbridge') {
+        $todaysCount = ArrivalWeighbridge::where('code', 'LIKE', $code.'%')->count();
     } else {
         return 'Invalid';
     }
@@ -301,7 +403,7 @@ function getSeason($year = null, $format = 'full')
         $startYear = intval($year);
     } elseif (is_numeric($year) && strlen($year) == 2) {
         $currentYear = date('Y');
-        $currentYearPrefix = intval(substr($currentYear, 0, 2));
+        $currentYearPrefix = intval(substr($currentYear, 0, 2)); // 0, 4
         $yearPrefix = intval($year / 100);
 
         // Determine if the two-digit year belongs to the current century or next century

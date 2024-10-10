@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('crop_categories', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status')->default(1);
             $table->integer('order')->nullable();
             $table->string('name')->unique();
             $table->string('slug')->unique();
-            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('no action')->indexed()->comment('to assign parent category');
+            $table->foreignId('crop_id')->constrained('crops')->onDelete('no action')->indexed();
             $table->text('detail')->nullable();
             $table->timestamps();
         });

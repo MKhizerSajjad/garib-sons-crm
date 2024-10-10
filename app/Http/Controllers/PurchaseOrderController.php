@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{
-    Item,
-    Category,
+    Crop,
+    CropItem,
+    CropCategory,
+    CropType,
+    CropYear,
     PurchaseOrder,
     Supplier,
     Location
@@ -15,7 +18,7 @@ class PurchaseOrderController extends Controller
 {
     public function index(Request $request)
     {
-        $data = PurchaseOrder::with(['cat', 'subCat', 'item', 'subItem', 'supplier'])->orderByDesc('dated')->paginate(10);
+        $data = PurchaseOrder::with(['cropCategory', 'cropItem', 'cropType', 'cropYear', 'supplier'])->orderByDesc('dated')->paginate(10);
 
         return view('purchase_order.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 10);
@@ -25,7 +28,10 @@ class PurchaseOrderController extends Controller
     {
         $data = json_decode('{}');
         $data->poCode = generateCode('po', 'RO', null, 'short');
-        $data->cats = Category::where('status', 1)->where('category_id', null)->get();
+        $data->crops = Crop::where('status', 1)->get();
+        // $data->crops = CropType::where('status', 1)->get();
+        $data->years = CropYear::where('status', 1)->get();
+        // $data->cats = CropCategory::where('status', 1)->get();
         // $data->subcats = Category::where('status', 1)->where('category_id', '!=', null)->get();
         // $data->items = Item::where('status', 1)->where('item_id', null)->get();
         // $data->subitems = Item::where('status', 1)->where('item_id', '!=', null)->orderBy('name')->get();
@@ -34,27 +40,52 @@ class PurchaseOrderController extends Controller
         return view('purchase_order.create', compact('data'));
     }
 
+    public function create1()
+    {
+        $data = json_decode('{}');
+        $data->poCode = generateCode('po', 'RO', null, 'short');
+        $data->crops = Crop::where('status', 1)->get();
+        // $data->crops = CropType::where('status', 1)->get();
+        $data->years = CropYear::where('status', 1)->get();
+        // $data->cats = CropCategory::where('status', 1)->get();
+        // $data->subcats = Category::where('status', 1)->where('category_id', '!=', null)->get();
+        // $data->items = Item::where('status', 1)->where('item_id', null)->get();
+        // $data->subitems = Item::where('status', 1)->where('item_id', '!=', null)->orderBy('name')->get();
+        $data->suppliers = Supplier::where('status', 1)->orderBy('name')->get();
+        $data->locations = Location::where('status', 1)->orderBy('name')->get();
+        return view('purchase_order.create1', compact('data'));
+    }
+
     public function store(Request $request)
     {
 
         // dd($request->all());
+        $vals = explode('|', $request->item);
+        // dd(($vals));
+        $item = $vals[0];
+        $cat = $vals[1];
+
         $validatedData = $request->validate([
             'status' => 'required|integer|in:1,2',
             'po_number' => 'required|string|max:255|unique:purchase_orders,code',
-            'category' => 'required|exists:categories,id',
-            'sub_category' => 'required|exists:categories,id',
-            'item' => 'required|exists:items,id',
-            'sub_item' => 'required|exists:items,id',
-            'note' => 'nullable|string|max:500',
+            'crop' => 'required|exists:crops,id',
+            // 'crop_category_id' => 'required|exists:crop_categories,id',
+            // 'item' => 'required|exists:crop_items,id',
+            'item' => 'required',
+            'type' => 'required|exists:crop_types,id',
+            'year' => 'required|exists:crop_years,id',
+            'note' => 'nullable|string|max:800',
             'supplier' => 'required|exists:suppliers,id',
-            'agent' => 'nullable|exists:supplier_agents,id', // Ensure this maps to the correct table if needed
+            'agent' => 'nullable|exists:supplier_agents,id',
             'description' => 'nullable|string|max:1000',
             'po_date' => 'nullable|date',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'location' => 'required|exists:locations,id',
             'min_delivery_mode' => 'required|integer',
-            'max_delivery_mode' => 'required|integer',
+            'min_qty' => 'required|integer',
+            // 'max_delivery_mode' => 'required|integer',
+            'max_qty' => 'required|integer',
             'delivery_term' => 'required|integer',
             'order_rate' => 'required|numeric|min:1',
             'kg_rate' => 'required|numeric|min:1',
@@ -66,6 +97,7 @@ class PurchaseOrderController extends Controller
             'misc_exp_per_bag' => 'required|numeric|min:1',
             'moisture' => 'required|numeric|min:1',
             'damage' => 'required|numeric|min:1',
+            'broken' => 'required|numeric|min:1',
             'chalkey' => 'required|numeric|min:1',
             'ov' => 'required|numeric|min:1',
             'chobba' => 'required|numeric|min:1',
@@ -80,22 +112,24 @@ class PurchaseOrderController extends Controller
         $model = new PurchaseOrder();
         $model->status = $validatedData['status'];
         $model->code = $validatedData['po_number']; // Ensure 'code' column is used for po_number
-        $model->category_id = $validatedData['category'];
-        $model->sub_category_id = $validatedData['sub_category'];
-        $model->item_id = $validatedData['item'];
-        $model->sub_item_id = $validatedData['sub_item'];
-        // $model->note = $validatedData['note'];
+        $model->crop_id = $validatedData['crop'];
+        $model->crop_category_id = $cat;
+        $model->crop_item_id = $item;
+        $model->crop_type_id = $validatedData['type'];
+        $model->crop_year_id = $validatedData['year'];
+        $model->sub_item_id = $validatedData['sub_item'] ?? 1;
+        $model->note = $validatedData['note'];
         $model->supplier_id = $validatedData['supplier'];
         $model->supplier_agent_id = $validatedData['agent']; // Assuming this maps to 'supplier_people_id'
-        // $model->description = $validatedData['description'];
+        $model->description = $validatedData['description'];
         $model->dated = $validatedData['po_date'];
         $model->start_date = $validatedData['start_date'];
         $model->end_date = $validatedData['end_date'];
         $model->location_id = 1; //$validatedData['location'];
         $model->min_delivery_mode = $validatedData['min_delivery_mode'];
-        $model->min_qty = 1; // Ensure this logic fits your requirements
-        $model->max_delivery_mode = $validatedData['max_delivery_mode'];
-        $model->max_qty = 1; // Ensure this logic fits your requirements
+        $model->min_qty = $validatedData['min_qty'];
+        $model->max_delivery_mode = $validatedData['min_delivery_mode'];
+        $model->max_qty = $validatedData['max_qty'];
         $model->delivery_term = $validatedData['delivery_term'];
         $model->order_rate = $validatedData['order_rate'];
         $model->kg_rate = $validatedData['kg_rate'];
@@ -107,6 +141,7 @@ class PurchaseOrderController extends Controller
         $model->bag_misc = $validatedData['misc_exp_per_bag'];
         $model->moisture = $validatedData['moisture'];
         $model->damage = $validatedData['damage'];
+        $model->broken = $validatedData['broken'];
         $model->chalky = $validatedData['chalkey'];
         $model->o_v = $validatedData['ov'];
         $model->chobba = $validatedData['chobba'];

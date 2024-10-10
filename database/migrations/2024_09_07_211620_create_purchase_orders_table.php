@@ -16,10 +16,12 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1);
             $table->string('code')->unique();
 
-            $table->foreignId('category_id')->constrained('categories')->onDelete('no action');
-            $table->foreignId('sub_category_id')->constrained('categories')->onDelete('no action');
-            $table->foreignId('item_id')->constrained('items')->onDelete('no action');
-            $table->foreignId('sub_item_id')->constrained('items')->onDelete('no action');
+            $table->foreignId('crop_id')->constrained('crops')->onDelete('no action')->indexed();
+            $table->foreignId('crop_category_id')->constrained('crop_categories')->onDelete('no action')->indexed();
+            $table->foreignId('crop_item_id')->constrained('crop_items')->onDelete('no action')->indexed();
+            $table->foreignId('crop_type_id')->constrained('crop_types')->onDelete('no action')->indexed();
+            $table->foreignId('crop_year_id')->constrained('crop_years')->onDelete('no action')->indexed();
+            $table->foreignId('sub_item_id')->nullable()->constrained('crop_items')->onDelete('no action')->nullable();
 
             $table->date('dated');
             $table->date('start_date')->nullable();
@@ -49,6 +51,7 @@ return new class extends Migration
             $table->decimal('bag_misc', 10, 2);
 
             $table->decimal('moisture', 10, 2);
+            $table->decimal('broken', 10, 2);
             $table->decimal('damage', 10, 2);
             $table->decimal('chalky', 10, 2);
             $table->decimal('o_v', 10, 2);

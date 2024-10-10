@@ -22,10 +22,14 @@ class DatabaseSeeder extends Seeder
             CitiesTableChunkThreeSeeder::class,
             CitiesTableChunkFourSeeder::class,
             CitiesTableChunkFiveSeeder::class,
-            CategoriesSeeder::class,
-            ItemsSeeder::class,
+            CropsSeeder::class,
+            CropTypesSeeder::class,
+            CropYearsSeeder::class,
+            CropCategoriesSeeder::class,
+            CropItemsSeeder::class,
             SupplierSeeder::class,
             LocationSeeder::class,
+            WeighbridgeSeeder::class,
         ]);
     }
 }

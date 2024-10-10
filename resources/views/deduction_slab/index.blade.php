@@ -8,12 +8,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0 font-size-18">Purchase Order</h4>
+                        <h4 class="mb-sm-0 font-size-18">Deduction Slab</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class=""><a href="{{route('purchaseorder.index')}}">Purchase Order</a></li>
+                                <li class=""><a href="javascript: void(0);">Deduction Slab</a></li>
                                 <li class="mx-1"><a href="javascript: void(0);"> > </a></li>
-                                <li class="breadcrumb-item active">Purchase Orders List</li>
+                                <li class="breadcrumb-item active">Deduction Slabs List</li>
                             </ol>
                         </div>
                     </div>
@@ -33,10 +33,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Purchase Orders List</h4>
+                            <h4 class="card-title">Deduction Slabs List</h4>
                             <div class="d-flex justify-content-end gap-2" bis_skin_checked="1">
-                                <a href="{{ route('purchaseorder.create') }}" class="btn btn-primary waves-effect waves-light"> <i class="bx bx-plus me-1"></i> Add New</a>
-                                <a href="{{ route('purchaseorder.create1') }}" class="btn btn-primary waves-effect waves-light"> <i class="bx bx-plus me-1"></i> Add New (Old)</a>
+                                <a href="{{ route('slab.create') }}" class="btn btn-primary waves-effect waves-light"> <i class="bx bx-plus me-1"></i> Add New</a>
                             </div>
                             {{-- <div class="card-title-desc card-subtitle" bis_skin_checked="1">Create responsive tables by wrapping any <code>.table</code> in <code>.table-responsive</code>to make them scroll horizontally on small devices (under 768px).</div> --}}
                             @if (count($data) > 0)
@@ -45,32 +44,22 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">#</th>
-                                                <th>PO Number</th>
-                                                <th>Date</th>
-                                                <th>Product</th>
-                                                <th>Category</th>
-                                                <th>Supplier</th>
-                                                <th>Amount</th>
-                                                {{-- <th>Status</th>
-                                                <th>Payment</th> --}}
-                                                <th class="text-center">Options</th>
+                                                <th>Type</th>
+                                                <th>Crop</th>
+                                                <th>Year</th>
+                                                <th>Status</th>
+                                                {{-- <th class="text-center">Options</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data as $key => $po)
+                                            @foreach ($data as $key => $ded)
                                                 <tr>
                                                     <td  class="text-center">{{ ++$key }}</td>
-                                                    <td>{{ $po->code }}</td>
-                                                    <td>{{ (new DateTime($po->dated))->format('d M Y') }}</td>
-                                                    <td>{{ $po->cropItem->name .' - '. $po->cropType->name }}</td>
-                                                    <td>{{ $po->cropCategory->name . ' - '. $po->cropYear->name }}</td>
-                                                    <td>{{ $po->supplier->name }}</td>
-                                                    <td>{{ numberFormat($po->total_amount, 'pkr') }}</td>
-                                                    {{-- <td>{!! getPayment('status', $po->status, 'badge') !!}</td> --}}
-                                                    <td class="text-center">
-                                                        <a href="#"><i class="bx bx-receipt"></i></a>
-                                                        {{-- <a href="{{ route('purchaseorder.edit', $po->id) }}"><i class="bx bx-pencil"></i></a> --}}
-                                                    </td>
+                                                    <td>{{ getDeduction('types', $ded->type) }}</td>
+                                                    <td>{{ $ded->crop->name }} - {{ $ded->cropType->name }} - {{ $ded->cat->name }}</td>
+                                                    <td>{{ $ded->year->name }}</td>
+                                                    <td>{!! getGenStatus('general', $ded->status, 'badge') !!}</td>
+                                                    {{-- <td class="text-center"> <a href="{{ route('slab.edit', $ded->id) }}"><i class="bx bx-pencil"></i></a></td> --}}
                                                 </tr>
                                             @endforeach
                                         </tbody>

@@ -10,28 +10,42 @@ class PurchaseOrder extends Model
     use HasFactory;
     protected $guarded;
 
-    public function cat()
+    public function crop()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(Crop::class);
+    }
+    public function cropCategory()
+    {
+        return $this->belongsTo(CropCategory::class);
     }
 
-    public function subCat()
+    public function cropItem()
     {
-        return $this->belongsTo(Category::class, 'sub_category_id', 'id');
+        return $this->belongsTo(CropItem::class);
     }
 
-    public function item()
+    public function cropType()
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsTo(CropType::class);
+    }
+
+    public function cropYear()
+    {
+        return $this->belongsTo(CropYear::class);
     }
 
     public function subItem()
     {
-        return $this->belongsTo(Item::class, 'sub_item_id');
+        return $this->belongsTo(CropItem::class, 'sub_item_id');
     }
 
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function supplierAgent()
+    {
+        return $this->belongsTo(SupplierAgent::class);
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('status')->default('1');
             $table->tinyInteger('user_type')->indexed()->default(2); // admin, team_lead, agent
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->comment('to assign team leader');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('no action')->comment('to assign team leader');
             $table->string('first_name', 20);
             $table->string('last_name', 15);
             $table->string('picture')->nullable();

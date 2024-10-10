@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('supplier_people', function (Blueprint $table) {
+        Schema::create('weighbridges', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status')->default(1);
-            $table->string('name');
-            $table->string('email')->nullable();
-            $table->string('landline')->nullable();
-            $table->string('phone')->unique();
-            $table->string('address')->nullable();
-            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('no action');
+            $table->tinyInteger('type')->default(1);
+            $table->integer('order')->nullable();
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->text('detail')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('supplier_people');
+        Schema::dropIfExists('weighbridges');
     }
 };

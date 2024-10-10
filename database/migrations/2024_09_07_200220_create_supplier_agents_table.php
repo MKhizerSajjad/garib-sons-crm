@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('landline')->nullable();
             $table->string('phone')->unique();
             $table->string('address')->nullable();
-            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('no action');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('no action')->indexed();
             $table->timestamps();
         });
     }

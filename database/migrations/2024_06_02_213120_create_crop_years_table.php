@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('crop_years', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('status')->default(1);
             $table->integer('order')->nullable();
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->date('from')->nullable();
+            $table->date('to')->nullable();
             $table->text('detail')->nullable();
-            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('no action')->indexed();
-            $table->foreignId('state_id')->nullable()->constrained('states')->onDelete('no action')->indexed();
-            $table->foreignId('city_id')->nullable()->constrained('cities')->onDelete('no action')->indexed();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('crop_years');
     }
 };

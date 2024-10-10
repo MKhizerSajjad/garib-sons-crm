@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
+use App\Models\CropItem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
-class ItemController extends Controller
+class CropItemController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Item::orderBy('name')->paginate(10);
+        $data = CropItem::orderBy('name')->paginate(10);
 
         return view('item.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 10);
@@ -37,17 +37,17 @@ class ItemController extends Controller
             'detail' => $request->detail,
         ];
 
-        Item::create($data);
+        CropItem::create($data);
 
         return redirect()->route('item.index')->with('success','Record created successfully');
     }
 
-    public function show(Item $item)
+    public function show(CropItem $cropItem)
     {
-        if (!empty($item)) {
+        if (!empty($cropItem)) {
 
             $data = [
-                'item' => $item
+                'item' => $cropItem
             ];
             return view('item.show', $data);
 
@@ -56,12 +56,12 @@ class ItemController extends Controller
         }
     }
 
-    public function edit(Item $item)
+    public function edit(CropItem $cropItem)
     {
         return view('item.edit', compact('item'));
     }
 
-    public function update(Request $request, Item $item)
+    public function update(Request $request, CropItem $cropItem)
     {
         $this->validate($request, [
             'name' => 'required|max:200',
@@ -69,21 +69,21 @@ class ItemController extends Controller
         ]);
 
         $data = [
-            'status' => isset($request->status) ? $request->status : $item->status,
+            'status' => isset($request->status) ? $request->status : $cropItem->status,
             'name' => $request->name,
             'category_id' => $request->category_id,
             'item_id' => $request->item_id,
             'detail' => $request->detail,
         ];
 
-        Item::find($item->id)->update($data);
+        CropItem::find($cropItem->id)->update($data);
 
         return redirect()->route('item.index')->with('success','Updated successfully');
     }
 
-    public function destroy(Item $item)
+    public function destroy(CropItem $cropItem)
     {
-        Item::find($item->id)->delete();
+        CropItem::find($cropItem->id)->delete();
         return redirect()->route('item.index')->with('success', 'Deleted successfully');
     }
 }

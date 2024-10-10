@@ -46,6 +46,42 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('slab.index') }}" class="waves-effect">
+                        <i class="bx bx-equalizer"></i>
+                        <span key="t-po">Deduction Slabs</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('first-inspection.index') }}" class="waves-effect">
+                        <i class="bx bx-search-alt-2"></i>
+                        <span key="t-po">First Inspection</span>
+                    </a>
+                </li>
+                {{-- <li>
+                    <a href="{{ route('first-inspection.index') }}" class="waves-effect">
+                        <i class="bx bx-search-alt"></i>
+                        <span key="t-po">First Inspection</span>
+                    </a>
+                </li> --}}
+                <li>
+                    <a href="{{ route('pass-in.index') }}" class="waves-effect">
+                        <i class="bx bx-log-in-circle"></i>
+                        <span key="t-po">Gate Pass In</span>
+                    </a>
+                </li>
+                {{-- <li>
+                    <a href="{{ route('pass-in.index') }}" class="waves-effect">
+                        <i class="bx bx-log-out-circle"></i>
+                        <span key="t-po">Gate Pass In</span>
+                    </a>
+                </li> --}}
+                <li>
+                    <a href="{{ route('first-weighbridge.index') }}" class="waves-effect">
+                        <i class="bx bx-calculator"></i>
+                        <span key="t-po">weighbridge</span>
+                    </a>
+                </li>
+                <li>
                     {{-- <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-store"></i>
                         <span key="t-ecommerce">Shop</span>
