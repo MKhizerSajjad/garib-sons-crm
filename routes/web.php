@@ -35,11 +35,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get-insp-details', [DependentController::class, 'getInspectionDetails']);
     Route::get('get-gate-passes', [DependentController::class, 'getGatePasses']);
 
+    Route::prefix('inspection/{type}')->group(function () {
+        Route::get('/', [ArrivalInspectionController::class, 'index'])->name('inspection.index');
+        Route::get('create', [ArrivalInspectionController::class, 'create'])->name('inspection.create');
+        Route::post('/', [ArrivalInspectionController::class, 'store'])->name('inspection.store');
+        Route::get('{inspection}', [ArrivalInspectionController::class, 'show'])->name('inspection.show');
+        Route::get('{inspection}/edit', [ArrivalInspectionController::class, 'edit'])->name('inspection.edit');
+        Route::put('{inspection}', [ArrivalInspectionController::class, 'update'])->name('inspection.update');
+        Route::delete('{inspection}', [ArrivalInspectionController::class, 'destroy'])->name('inspection.destroy');
+    });
 
     Route::resource('slab', DeductionSlabController::class)->names('slab');
     Route::resource('first-inspection', ArrivalInspectionController::class)->names('first-inspection');
     Route::resource('pass-in', ArrivalGatePassController::class)->names('pass-in');
     Route::resource('first-weighbridge', ArrivalWeighbridgeController::class)->names('first-weighbridge');
+    // Route::resource('second-inspection', ArrivalInspectionController::class)->names('second-inspection');
+    // Route::resource('second-weighbridge', ArrivalWeighbridgeController::class)->names('second-weighbridge');
     Route::prefix('purchaseorder')->group(function () {
         Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchaseorder.index');
         Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchaseorder.create');

@@ -52,17 +52,16 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('first-inspection.index') }}" class="waves-effect">
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-search-alt-2"></i>
-                        <span key="t-po">First Inspection</span>
+                        <span key="t-ecommerce">Inspections</span>
                     </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('inspection.index', ['type' => 'first']) }}" key="t-first-inspection">First Inspection</a></li>
+                        <li><a href="{{ route('inspection.index', ['type' => 'second']) }}" key="t-second-inspection">Second Inspection</a></li>
+                        <li><a href="{{ route('inspection.index', ['type' => 'final']) }}" key="t-final-inspection">Final Inspection</a></li>
+                    </ul>
                 </li>
-                {{-- <li>
-                    <a href="{{ route('first-inspection.index') }}" class="waves-effect">
-                        <i class="bx bx-search-alt"></i>
-                        <span key="t-po">First Inspection</span>
-                    </a>
-                </li> --}}
                 <li>
                     <a href="{{ route('pass-in.index') }}" class="waves-effect">
                         <i class="bx bx-log-in-circle"></i>

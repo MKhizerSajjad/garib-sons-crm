@@ -48,4 +48,26 @@ class PurchaseOrder extends Model
     {
         return $this->belongsTo(SupplierAgent::class);
     }
+
+    public function inspections()
+    {
+        return $this->hasMany(ArrivalInspection::class, 'purchase_order_id', 'id');
+    }
+
+    public function firstInspection()
+    {
+        return $this->hasMany(ArrivalInspection::class, 'arrival_inspection_id', 'id')->whereIn('count', [1, 2, 3])->where('status', 1);
+    }
+
+    public function secondInspection()
+    {
+        return $this->hasMany(ArrivalInspection::class, 'arrival_inspection_id', 'id')->whereIn('count', [2, 3]);
+        // return $this->belongsTo(ArrivalInspection::class, 'id', 'arrival_inspection_id')->where('count', 2);
+    }
+
+    public function finalInspection()
+    {
+        return $this->hasMany(ArrivalInspection::class, 'arrival_inspection_id', 'id')->whereIn('count', [3]);
+        // return $this->belongsTo(ArrivalInspection::class, 'id', 'arrival_inspection_id')->where('count', 3);
+    }
 }

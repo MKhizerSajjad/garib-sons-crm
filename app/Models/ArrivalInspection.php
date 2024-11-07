@@ -19,4 +19,15 @@ class ArrivalInspection extends Model
     {
         return $this->belongsTo(ArrivalInspectionParam::class, 'arrival_inspection_id', 'id');
     }
+
+    public function first()
+    {
+        return $this->belongsTo(ArrivalInspection::class, 'arrival_inspection_id', 'id')->where('count', 1);
+    }
+
+    public function second()
+    {
+        return $this->belongsTo(ArrivalInspection::class, 'arrival_inspection_id', 'arrival_inspection_id')->where('count', 2);
+    }
+
 }

@@ -8,11 +8,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0 font-size-18">First Inspection</h4>
+                        <h4 class="mb-sm-0 font-size-18">{{ ucfirst($type) }} Inspection</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class=""><a href="{{ route('first-inspection.index') }}">First Inspection</a></li>
+                                <li class=""><a href="{{ route('inspection.index', ['type' => $type]) }}">{{ ucfirst($type) }} Inspection</a></li>
                                 <li class="mx-1"><a href="javascript: void(0);"> > </a></li>
                                 <li class="breadcrumb-item active">Add New</li>
                             </ol>
@@ -44,9 +44,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Add New First Inspection</h4>
+                            <h4 class="card-title">Add New aa {{ ucfirst($type) }} Inspection</h4>
                             {{-- <p class="card-title-desc">Fill all information below</p> --}}
-                            <form method="POST" action="{{ route('first-inspection.store') }}">
+                            <form method="POST" action="{{ route('inspection.store', ['type' => $type]) }}">
                                 @csrf
                                 <div class="form-group">
                                     <input type="hidden" name="count" value="1">
@@ -341,7 +341,7 @@
 
                                     <div class="d-flex justify-content-end gap-2">
                                         <button type="submit" class="btn btn-primary waves-effect waves-light w-10">Submit</button>
-                                        <a href="{{ route('first-inspection.index') }}" class="waves-effect waves-light btn btn-secondary"> Cancel</a>
+                                        <a href="{{ route('inspection.index', ['type' => $type]) }}" class="waves-effect waves-light btn btn-secondary"> Cancel</a>
                                     </div>
                                 </div>
                             </form>

@@ -324,6 +324,18 @@ function getDeduction($prefix, $status = null, $type = null)
     return statusReturn($prefix, $statuses, $status, $type );
 }
 
+function getInspection($prefix, $status = null, $type = null)
+{
+    $statuses = [
+        'types'=> [
+            'first' => [1, '<span class="badge bg-primary">First</span>'],
+            'second' => [2, '<span class="badge bg-warning">Second</span>'],
+            'final' => [3, '<span class="badge bg-secondary">Final</span>'],
+        ],
+    ];
+
+    return statusReturn($prefix, $statuses, $status, $type );
+}
 
 // ************************* OTHERS ************************
 function getFileTypeFromExtension($extension) {
