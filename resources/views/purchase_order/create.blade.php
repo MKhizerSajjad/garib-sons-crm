@@ -183,9 +183,9 @@
                                                         @enderror
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label for="end_date" class="form-label">End Date <span class="text text-danger"> *</span></label>
-                                                        <input type="date" name="end_date" class="form-control" id="end_date" value="{{ old('end_date') }}" placeholder="End Date">
-                                                        @error('end_date')
+                                                        <label for="delivery_date" class="form-label">Delivery Date <span class="text text-danger"> *</span></label>
+                                                        <input type="date" name="delivery_date" class="form-control" id="delivery_date" value="{{ old('delivery_date') }}" placeholder="Delivery Date">
+                                                        @error('delivery_date')
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -552,8 +552,8 @@
                                                     <input type="text" name="weight_amount" id="weight_amount" class="form-control" placeholder="Weight Total Amount" readonly>
                                                 </div>
                                                 <div class="mb-3 col-sm-12 offset-sm-0 col-md-4 offset-md-8">
-                                                    <label>Grand Total Amount</label>
-                                                    <input type="text" name="grand_total_amount" id="grand_total_amount" class="form-control" placeholder="Total Services Amount" readonly>
+                                                    <label>Landed Cost</label>
+                                                    <input type="text" name="landed_cost" id="landed_cost" class="form-control" placeholder="Landed Cost Amount" readonly>
                                                 </div>
                                                 {{-- <h4 id="grand_total_words">{{ numberToWords(11) }}</h4> --}}
                                             </div>
@@ -843,7 +843,7 @@
 
             // Update the rate field with the calculated value
             $('#weight_amount').val(totalWeightAmount || '');
-            $('#grand_total_amount').val(grandTotal || '');
+            $('#landed_cost').val(grandTotal || '');
             // $('#grand_total_words').text(grandTotal || '');
         }
         // Calculate Order Total Amount
