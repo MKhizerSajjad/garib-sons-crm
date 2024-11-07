@@ -12,7 +12,7 @@
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class=""><a href="{{ route('first-weighbridge.index') }}">Gate Pass In</a></li>
+                                <li class=""><a href="{{ route('pass-in.index') }}">Gate Pass In</a></li>
                                 <li class="mx-1"><a href="javascript: void(0);"> > </a></li>
                                 <li class="breadcrumb-item active">Add New</li>
                             </ol>
@@ -46,7 +46,7 @@
                         <div class="card-body">
                             <h4 class="card-title">Add New Gate Pass In</h4>
                             {{-- <p class="card-title-desc">Fill all information below</p> --}}
-                            <form method="POST" action="{{ route('first-weighbridge.store') }}">
+                            <form method="POST" action="{{ route('pass-in.index') }}">
                                 @csrf
                                 <div class="form-group">
                                     <input type="hidden" name="count" value="1">
@@ -97,20 +97,20 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="col-md-3">
+                                        {{-- <div class="col-md-3">
                                             <label for="pass">Gate Pass In <span class="text text-danger"> *</span></label>
                                             <select id="pass" name="pass" class="form-control @error('pass') is-invalid @enderror">
                                                 <option value="">Select Gate Pass In</option>
-                                                {{-- @foreach ($data->pass as $pass)
+                                                @foreach ($data->pass as $pass)
                                                     <option value="{{ $pass->id }}" {{ old('pass') == $pass->id ? 'selected' : '' }}>{{ $pass->code }}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                             @error('pass')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
-                                        </div>
+                                        </div> --}}
                                     </div>
 
                                     <h4 class="card-title mt-3">Delivery Details</h4>
@@ -199,7 +199,7 @@
 
                                     <div class="d-flex justify-content-end gap-2">
                                         <button type="submit" class="btn btn-primary waves-effect waves-light w-10">Submit</button>
-                                        <a href="{{ route('first-weighbridge.index') }}" class="waves-effect waves-light btn btn-secondary"> Cancel</a>
+                                        <a href="{{ route('pass-in.index') }}" class="waves-effect waves-light btn btn-secondary"> Cancel</a>
                                     </div>
                                 </div>
                             </form>

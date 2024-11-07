@@ -22,7 +22,7 @@ class ArrivalGatePassController extends Controller
     {
         $data = json_decode('{}');
         $data->po = PurchaseOrder::get();
-        $data->inspections = ArrivalInspection::where('count', 1)->get();
+        // $data->inspections = ArrivalInspection::where([['count', 1], ['status', 1]])->get();
         $data->code = generateCode('passin', 'GIN');
         return view('pass_in.create', compact('data'));
     }

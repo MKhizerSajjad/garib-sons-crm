@@ -95,8 +95,8 @@ class DependentController extends Controller
     public function getInspections(Request $request)
     {
         $poId = $request->input('po_id');
-        $po = ArrivalInspection::where('id', $poId)
-            ->where('status', 1)
+        $po = ArrivalInspection::where('purchase_order_id', $poId)
+            ->where([['count', 1], ['status', 1]])
             ->select('id', 'code', 'purchase_order_id')
             ->get();
 
@@ -107,7 +107,7 @@ class DependentController extends Controller
     {
         $insId = $request->input('inspection_id');
         $details = ArrivalInspection::where('id', $insId)
-            ->where('status', 1)
+            ->where([['count', 1], ['status', 1]])
             ->first();
 
         return response()->json($details);
