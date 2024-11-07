@@ -80,7 +80,7 @@ class PurchaseOrderController extends Controller
             'description' => 'nullable|string|max:1000',
             'po_date' => 'nullable|date',
             'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date',
+            'delivery_date' => 'nullable|date',
             'location' => 'required|exists:locations,id',
             'min_delivery_mode' => 'required|integer',
             'min_qty' => 'required|integer',
@@ -103,7 +103,7 @@ class PurchaseOrderController extends Controller
             'chobba' => 'required|numeric|min:1',
             'look' => 'required|numeric|min:1',
             'weight_amount' => 'required|numeric|min:1',
-            'grand_total_amount' => 'required|numeric|min:1',
+            'landed_cost' => 'required|numeric|min:1',
             'payment_term' => 'required|integer',
             'created_by' => 'required|exists:users,id',
         ]);
@@ -124,7 +124,7 @@ class PurchaseOrderController extends Controller
         $model->description = $validatedData['description'];
         $model->dated = $validatedData['po_date'];
         $model->start_date = $validatedData['start_date'];
-        $model->end_date = $validatedData['end_date'];
+        $model->end_date = $validatedData['delivery_date'];
         $model->location_id = 1; //$validatedData['location'];
         $model->min_delivery_mode = $validatedData['min_delivery_mode'];
         $model->min_qty = $validatedData['min_qty'];
@@ -147,7 +147,7 @@ class PurchaseOrderController extends Controller
         $model->chobba = $validatedData['chobba'];
         $model->look = $validatedData['look'];
         $model->weight_amount = $validatedData['weight_amount'];
-        $model->total_amount = $validatedData['grand_total_amount'];
+        $model->total_amount = $validatedData['landed_cost'];
         $model->payment_term = $validatedData['payment_term'];
         $model->created_by = $validatedData['created_by'];
 
